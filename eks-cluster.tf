@@ -10,7 +10,7 @@ resource "aws_iam_role" "demo-cluster" {
 
   assume_role_policy = <<POLICY
 {
-  "Version": "2012-10-17",
+  "Version": "date",
   "Statement": [
     {
       "Effect": "Allow",
