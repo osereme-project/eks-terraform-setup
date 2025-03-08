@@ -1,9 +1,3 @@
-<<kops
-Landmark Technologies 
-Tel: +1 437 215 2483 
-mylandmarktech@gailcom 
-www.mylandmarktech.com 
-kops
 Setup Kubernetes (K8s) Cluster on AWS Using KOPS
 
 #!/bin/bash
@@ -11,29 +5,29 @@ Setup Kubernetes (K8s) Cluster on AWS Using KOPS
 
 #2) install AWSCLI
 
- sudo apt update -y
- sudo apt install unzip wget -y
- sudo curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip
- sudo apt install unzip python -y
- sudo unzip awscli-bundle.zip
- sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+ $ sudo apt update -y
+ $ sudo apt install unzip wget -y
+ $ sudo curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip
+ $ sudo apt install unzip python -y
+ $ sudo unzip awscli-bundle.zip
+ $ sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
  
  
 #3) Install kops on ubuntu instance:
 
  	#Install wget if not installed
- 	sudo apt install wget -y
- 	sudo wget https://github.com/kubernetes/kops/releases/download/v1.16.1/kops-linux-amd64
- 	sudo chmod +x kops-linux-amd64
- 	sudo mv kops-linux-amd64 /usr/local/bin/kops
+ 	$ sudo apt install wget -y
+ 	$ sudo wget https://github.com/kubernetes/kops/releases/download/v1.30.4/kops-linux-amd64
+ 	$ sudo chmod +x kops-linux-amd64
+ 	$ sudo mv kops-linux-amd64 /usr/local/bin/kops
  
 #4) Install kubectl
 
- sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
- sudo chmod +x ./kubectl
- sudo mv ./kubectl /usr/local/bin/kubectl
- aws s3 mb s3://nubonglegah.k8.local
- aws s3 ls
+ $ sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-			              release/release/stable.txt)/bin/linux/amd64/kubectl
+ $ sudo chmod +x ./kubectl
+ $ sudo mv ./kubectl /usr/local/bin/kubectl
+ $ aws s3 mb s3://nubonglegah.k8.local
+ $ aws s3 ls
 
 5) Create an IAM role from Consloe or CLI with below Policies.
 
@@ -50,8 +44,8 @@ You Created. --> Save.
 
 6) create an S3 bucket Execute below commond in KOPS Server use unique bucket name if you get bucket name exists error.
 
-	aws s3 mb s3://nubonglegah.k8.local
-	aws s3 ls
+	$ aws s3 mb s3://nubonglegah.k8.local
+	$ aws s3 ls
 	
     ex:
 	# S3 bucket name should be unique across AWS
@@ -70,34 +64,34 @@ You Created. --> Save.
 	
 7) Create sshkeys before creating cluster
 
-    ssh-keygen
+    $ ssh-keygen
  
 
 8)Create kubernetes cluster definitions on S3 bucket
 
-	kops create cluster --zones us-east-2c --networking weave --master-size t2.medium --master-count 1 --node-size t2.large --node-count=2 ${NAME}
+	$ kops create cluster --zones us-east-2c --networking weave --master-size t2.medium --master-count 1 --node-size t2.large --node-count=2 ${NAME}
 	
-	kops create cluster --zones us-east-1e,zones us-east-2c --networking weave --master-size t2.medium --master-count 2 --node-size t2.micro --node-count=2 ${NAME}
+	$ kops create cluster --zones us-east-1e,zones us-east-2c --networking weave --master-size t2.medium --master-count 2 --node-size t2.micro --node-count=2 ${NAME}
 
-	kops create secret --name ${NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub
+	$ kops create secret --name ${NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub
 
 9) Create kubernetes cluser
 
-	 kops update cluster ${NAME} --yes
+	 $ kops update cluster ${NAME} --yes
 
 10) Validate your cluster(KOPS will take some time to create cluster ,Execute below commond after 3 or 4 mins)
 
-	   kops validate cluster
+	   $ kops validate cluster
  
 11) To list nodes
 
-	  kubectl get nodes 
+	 $ kubectl get nodes 
   
   
   
 To Delete Cluster
 
-   kops delete cluster --name=${NAME} --state=${KOPS_STATE_STORE} --yes  
+ $ kops delete cluster --name=${NAME} --state=${KOPS_STATE_STORE} --yes  
    
 ====================================================================================================
 
